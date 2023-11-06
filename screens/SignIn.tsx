@@ -5,7 +5,7 @@ import { TextInput } from 'react-native-paper';
 import * as yup from 'yup';
 import { useAuth } from '../contexts/authContext';
 
-const SignIn = () => {
+const SignIn = ({ navigation }) => {
   const { authContext } = useAuth();
 
   function handleSignIn({ values }) {
@@ -50,6 +50,7 @@ const SignIn = () => {
                 onBlur={handleBlur('email')}
                 value={values.email}
                 placeholder="E-mail"
+                autoCapitalize="none"
               />
               {errors.email && touched.email && (
                 <Text style={styles.error}>{errors.email}</Text>
@@ -63,6 +64,8 @@ const SignIn = () => {
                 onBlur={handleBlur('password')}
                 value={values.password}
                 placeholder="Senha"
+                secureTextEntry={true}
+                autoCapitalize="none"
               />
               {errors.password && touched.password && (
                 <Text style={styles.error}>{errors.password}</Text>
@@ -80,6 +83,15 @@ const SignIn = () => {
           </View>
         )}
       </Formik>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('SignUp');
+        }}
+        style={styles.buttonSignUp}
+      >
+        <Text style={styles.textButton}>Não tem uma conta? Cadastre-se</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -107,5 +119,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 10,
+  },
+  buttonSignUp: {
+    height: 40,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#00b94a',
+    margin: 10,
+  },
+  textButton: {
+    color: '#fff',
   },
 });

@@ -3,13 +3,21 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-paper';
+import { useAuth } from '../contexts/authContext';
 
 const SignUp = () => {
+  const { authContext } = useAuth();
+
   return (
     <>
       <Formik
         initialValues={{ email: '', password: '', confirmPassword: '' }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) =>
+          authContext.signUp({
+            email: values.email,
+            password: values.password,
+          })
+        }
         validationSchema={yup.object().shape({
           email: yup
             .string()
@@ -42,6 +50,7 @@ const SignUp = () => {
                 onBlur={handleBlur('email')}
                 value={values.email}
                 placeholder="E-mail"
+                autoCapitalize="none"
               />
 
               {errors.email && touched.email && (
@@ -56,6 +65,8 @@ const SignUp = () => {
                 onBlur={handleBlur('password')}
                 value={values.password}
                 placeholder="Senha"
+                secureTextEntry={true}
+                autoCapitalize="none"
               />
               {errors.password && touched.password && (
                 <Text style={styles.error}>{errors.password}</Text>
@@ -69,6 +80,8 @@ const SignUp = () => {
                 onBlur={handleBlur('confirmPassword')}
                 value={values.confirmPassword}
                 placeholder="Confirmação de senha"
+                secureTextEntry={true}
+                autoCapitalize="none"
               />
               {errors.confirmPassword && touched.confirmPassword && (
                 <Text style={styles.error}>{errors.confirmPassword}</Text>
