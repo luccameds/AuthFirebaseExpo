@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Home, SignIn, SignUp } from '../screens';
+import { useAuth } from '../contexts/authContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,16 +18,18 @@ const AuthorizedRoutes = () => {
 const UnauthorizedRoutes = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
   );
 };
 
 const Routes = () => {
+  const { state } = useAuth();
+
   return (
     <NavigationContainer>
-      {false ? <AuthorizedRoutes /> : <UnauthorizedRoutes />}
+      {state.userToken ? <AuthorizedRoutes /> : <UnauthorizedRoutes />}
     </NavigationContainer>
   );
 };

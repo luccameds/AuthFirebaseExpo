@@ -1,15 +1,27 @@
+import { Formik } from 'formik';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Formik } from 'formik';
-import * as yup from 'yup';
 import { TextInput } from 'react-native-paper';
+import * as yup from 'yup';
+import { useAuth } from '../contexts/authContext';
 
 const SignIn = () => {
+  const { authContext } = useAuth();
+
+  function handleSignIn({ values }) {
+    authContext.signIn({
+      email: values.email,
+      password: values.password,
+    });
+  }
+
   return (
     <View>
       <Formik
         initialValues={{ email: '', password: '' }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => {
+          handleSignIn({ values });
+        }}
         validationSchema={yup.object().shape({
           email: yup
             .string()
